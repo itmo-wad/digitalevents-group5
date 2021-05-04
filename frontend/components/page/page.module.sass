@@ -1,0 +1,94 @@
+
+.content
+	flex: 1 1 80vw
+	min-width: 85vw
+	overflow-y: auto
+	overflow-x: hidden
+	transition: transform 0.4s
+	position: relative
+
+	@media(min-width: 500px)
+
+		scrollbar-color: #282725 #ffffff
+		scrollbar-width: thin
+
+		&::-webkit-scrollbar 
+			width: 6px
+			background: none
+			transform: translateX(-20px)
+
+
+		&::-webkit-scrollbar-thumb
+			background-color: white
+			border-radius: 8px
+
+	&.scrolled
+		transform: translateY(-400px)
+
+.noise
+	background-image: url(/images/noise.png)
+	animation: noise 0.8s steps(2) infinite
+
+	background-color: white
+	border-radius: 0.6em
+	color: black
+	min-height: 100vh
+
+	padding: 1.5em 2em
+
+	@media(max-width: 500px)
+		padding: 6vw 6vw
+
+@keyframes noise
+	0%
+		background-position: 0 0
+	25%
+		background-position: 2px 40px
+	50%
+		background-position: 20px 20px
+	75%
+		background-position: -20px -5px
+	100%
+		background-position: 0 0
+
+.logo
+	width: 15em
+	margin-bottom: 4em
+	@media(max-width: 500px)
+		width: 88vw
+		margin-bottom: 3em
+
+.footer 
+	right: 0
+	margin: 2.5em 2.5em
+	box-sizing: border-box
+	display: flex
+	justify-content: space-between
+	position: relative
+
+	@media(max-width: 500px)
+		flex-direction: column
+		margin: 2vw
+
+
+	&.scrolled
+		bottom: 0
+
+	.contacts
+		display: flex
+		flex-direction: column
+
+		@media(max-width: 500px)
+			margin-top: 0.8em
+
+	.right
+		text-align: right
+		justify-content: space-between
+
+	.copyright
+		font-size: 0.3em
+		margin-top: auto
+		position: absolute
+		left: 0
+		bottom: 0
+		

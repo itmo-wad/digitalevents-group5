@@ -1,0 +1,47 @@
+.form
+	max-width: 750px
+
+.input
+	display: flex
+	justify-content: space-between
+	border-bottom: 1px solid black
+	
+	&:first-child
+		border-top: 1px solid black
+	
+	label
+		font-size: 1.2em
+		line-height: 80px
+	
+	input
+		border: none
+		height: 80px
+		line-height: 80px
+		outline: none
+		text-align: right
+		flex: 1 1 auto
+		font-size: 0.8em
+
+	@media(max-width: 900px)
+		flex-direction: column
+
+		label
+			font-size: 1.4em
+			line-height: 1em
+			margin-top: 2em
+		
+		input
+			align-self: stretch	
+			font-size: 1em
+
+.buttons
+	margin-top: 50px
+	button
+		background: none
+		border: 1px solid black
+		line-height: 2.2em
+		padding: 0 1.8em
+		margin-right: 1.5em
+		border-radius: 1.1em
+		outline: none
+		font-size: 0.8em
