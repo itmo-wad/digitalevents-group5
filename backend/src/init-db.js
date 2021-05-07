@@ -7,6 +7,7 @@ const indexes = {
 		token: { unique: true }
 	},
 	services: {
+		sort: { sort: 1 },
 		url: { unique: true }
 	}
 }
@@ -27,5 +28,12 @@ module.exports = async function(db){
 		}
 	}
 
+	const services = await db.collection('services').find({}, { projection: { sort: 1, url: 1 }, sort: { sort: 1 } }).toArray()
+	for(let i = 0; i < services.length; i++){
+		if(!services[i].sort){
+			await db.collection('services').updateOne({ _id: services[i]._id }, { $set: { sort: i } })
+			console.log(`Service ${services[i].url} sorting`)
+		}
+	}
 	
 }

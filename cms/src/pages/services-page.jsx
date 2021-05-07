@@ -8,7 +8,14 @@ import { closeModal, openModal, openModalConfirm, openModalMedia } from 'compone
 
 import ListContainer from 'components/list-container'
 import { useForm, Segment } from 'controls'
-import { IoIosAdd, IoMdTrash, IoIosPlayCircle, IoMdCreate } from 'react-icons/io'
+import { 
+	IoIosAdd, 
+	IoMdTrash, 
+	IoIosPlayCircle, 
+	IoMdCreate, 
+	IoIosArrowDropup, 
+	IoIosArrowDropdown 
+} from 'react-icons/io'
 import { GET, REST } from 'libs/fetch'
 
 
@@ -65,6 +72,12 @@ const addProjectModal = {
 	url: { type: "text", label: "URL адрес", placeholder: "project" },
 }
 
+const moveCategory = async (category, pos) => {
+	const resp = await REST('/api/services/'+category+'/move', { pos }, 'POST')
+	if(resp.error) return console.log(resp)
+	mutate('/api/services')
+}
+
 export default function ServicesPage (){
 
 	const form = useForm({lang: "ru"})
@@ -92,9 +105,11 @@ export default function ServicesPage (){
 		{ title: "Редактировать категорию", icon: <IoMdCreate/>, onClick: item => {
 			openModal("Изменение категории", addCategoryModal, addOrUpdateCategory(lang, item), getLang(item, lang))
 		}},
+		{ title: "Переместить выше", icon: <IoIosArrowDropup/>, onClick: item => moveCategory(item.url, 1) },
+		{ title: "Переместить ниже", icon: <IoIosArrowDropdown/>, onClick: item => moveCategory(item.url, -1) },
 		{ title: "Удалить категорию", icon: <IoMdTrash/>, onClick: (item) => {
 			openModalConfirm('Удалить категорию?', _lang(item.title), () => deleteCategory(item.url))
-		}}
+		}},
 	]
 
 	const addProject = () => (category && category.url)?

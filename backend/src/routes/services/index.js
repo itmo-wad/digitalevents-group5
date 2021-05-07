@@ -40,13 +40,18 @@ module.exports = function(app, db) {
 		res.json(resp)
 	})
 
+	app.post('/services/:category/move', async (req, res) => {
+		const resp = await moveCategory(db, req.params.category, req.body)
+		res.json(resp)
+	})
+
 	projectRoutes(app, db)
 	servicesRoutes(app, db)
 }
 
 
 async function getCategories(db){
-	const categories = await db.collection('services').find({}).toArray()
+	const categories = await db.collection('services').find({}, { sort: { sort: 1 } }).toArray()
 
 	return categories
 }
@@ -79,4 +84,23 @@ async function updateCategory (db, category, _data){
 async function deleteCategory (db, category){
 	const resp = await db.collection('services').deleteOne({url: category})
 	return { count: resp.deletedCount }
+}
+
+async function moveCategory(db, url, { pos }){
+
+	const category = await db.collection('services').findOne({ url }, { projection: { sort: 1 }})	
+	if(!category) return { error: { url: "wrong category url" }}
+
+	const operator = pos < 0? { $gt: category.sort }: { $lt: category.sort }
+
+	const lastCategory = await db.collection('services').findOne({ sort: operator }, { 
+		projection: { sort: 1 }, sort: { sort: -pos } 
+	})
+
+	if(!lastCategory) return { error: { sort: "category can't move" }}
+
+	await db.collection('services').updateOne({ _id: category._id }, { $set: { sort: lastCategory.sort } })
+	await db.collection('services').updateOne({ _id: lastCategory._id }, { $set: { sort: category.sort } })
+
+	return { success: "success" }
 }

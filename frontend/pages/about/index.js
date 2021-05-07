@@ -1,9 +1,14 @@
+import { _lang } from 'libs/rus'
+import { useRouter } from 'next/router'
+
 import styles from './about.module.sass'
 
 export default function AboutPage({pageData}) {
+	const { locale } = useRouter()
+
 	return (
 		<>
-			<h1 className="mt-0">О нас</h1>
+			<h1 className="mt-0">{_lang({ ru: "О нас", en: "About us"}, locale)}</h1>
 			<div className="medium-text ml">{pageData.first.text}</div>
 			{pageData.first.image && (<img className={styles.image} src={pageData.first.image.src} alt="Digital Events"/>)}
 
@@ -20,9 +25,9 @@ export default function AboutPage({pageData}) {
 
 import { getData } from 'server-side/get-static-data'
 
-export async function getStaticProps(){
-	const pageData = await getData('about-page', 'ru')
-	const { contacts } = await getData('contacts-page', 'ru')
+export async function getStaticProps({locale}){
+	const pageData = await getData('about-page', locale)
+	const { contacts } = await getData('contacts-page', locale)
 
 
 	return { 

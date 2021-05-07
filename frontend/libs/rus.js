@@ -24,14 +24,26 @@ export function getChatDate(date){
 	return `${dt.getDay()}.${dt.getMonth()}.${dt.getFullYear()}. в ${dt.getHours}:${dt.getMinutes}`
 }
 
-export function _lang(item, lang){
+const locales = {
+	'ru-RU': 'ru',
+	'en-US': 'en'
+}
+
+export function localeToLang(locale){
+	if(locale in locales) return locales[locale]
+	return locale
+}
+
+export function _lang(item, locale){
+	const lang = localeToLang(locale)
 	if(typeof(item) === 'object')
 		return item[lang] || item.ru
 	
 	return item
 }
 
-export function getLang(item, lang){
+export function getLang(item, locale){
+	const lang = localeToLang(locale)
 	const newItem = {}
 	for(const key in item)
 		if(typeof item[key] === 'object' && (item[key][lang] || item[key]['ru']))

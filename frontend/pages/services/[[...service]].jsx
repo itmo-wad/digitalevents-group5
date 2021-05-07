@@ -6,18 +6,18 @@ import Project from 'components/page-components/services/project'
 
 export default function ServicesPage({services}) {
 
-	const router = useRouter()
-	const { service } = router.query
+	const { query, locale } = useRouter()
+	const { service } = query
 	
 	const categoryUrl = Array.isArray(service)?service[0]: ""
 	const projectUrl = Array.isArray(service)?service[1]: ""
-	
-	const category = categoryUrl? services.find(item => item.url === categoryUrl): null
+
+	const category = (services && categoryUrl)? services.find(item => item.url === categoryUrl): null
 	const project = (projectUrl && category && category.projects)? category.projects.find(item => item.url === projectUrl): null
 
 	return (
 		<div>
-			<h1 className="mt-0">Услуги</h1>
+			<h1 className="mt-0">{_lang({ ru: "Услуги", en: "Services"}, locale)}</h1>
 			<CategoryList services={services} activeCategory={categoryUrl}/>
 			<Category category={category} activeProject={projectUrl} />
 			<Project project={project} />
@@ -26,11 +26,12 @@ export default function ServicesPage({services}) {
 }
 
 import { getServices, getData } from 'server-side/get-static-data'
+import { _lang } from 'libs/rus'
 
-export async function getStaticProps(){
+export async function getStaticProps({locale}){
 
 	const services = await getServices()
-	const { contacts } = await getData('contacts-page', 'ru')
+	const { contacts } = await getData('contacts-page', locale )
 
 	return { 
 		props: { services, contacts },

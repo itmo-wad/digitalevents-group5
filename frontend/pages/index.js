@@ -29,11 +29,12 @@ export default function HomePage({pageData, services, contacts}) {
 
 import { getData, getServices } from 'server-side/get-static-data'
 
-export async function getStaticProps(){
-	const pageData = await getData('main-page', 'ru')
+export async function getStaticProps({locale}){
 
-	const services = await getServices()
-	const { contacts } = await getData('contacts-page', 'ru')
+	const pageData = await getData('main-page', locale)
+
+	const services = await getServices(locale)
+	const { contacts } = await getData('contacts-page', locale)
 
 	return { 
 		props: { pageData, services, contacts },

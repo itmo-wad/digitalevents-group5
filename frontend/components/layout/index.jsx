@@ -1,6 +1,7 @@
 import cn from 'classnames'
 import { useRouter } from 'next/router'
 import { getStyle } from './libs'
+import { _lang } from 'libs/rus'
 
 import styles from './layout.module.sass'
 import MenuTab from './menu-tab'
@@ -9,10 +10,10 @@ import CustomCursor from './custom-cursor'
 import Page from '../page'
 
 const menu = [
-	{ href: "/", title: "Главная", special: true },
-	{ href: "/about", title: "О нас" },
-	{ href: "/services", title: "Услуги" },
-	{ href: "/contacts", title: "Контакты" }
+	{ href: "/", title: { ru: "Главная", en: "Main" }, special: true },
+	{ href: "/about", title: { ru: "О нас", en: "About us" } },
+	{ href: "/services", title: { ru: "Услуги", en: "Services" } },
+	{ href: "/contacts", title: { ru: "Контакты", en: "Contacts" } }
 ]
 
 const linkHeight = 2
@@ -29,13 +30,13 @@ if (process.browser) {
 
 function Layout({children, contacts}){
 
-	const router = useRouter()
+	const { pathname, locale } = useRouter()
 	//page - это индекс текущей страницы
-	const page = menu.reduce((page, item, index) => router.pathname.startsWith(item.href)?index: page, 0)
-
+	const page = menu.reduce((page, item, index) => pathname.startsWith(item.href)?index: page, 0)
+	
 	return (
 		<div className={styles.main}>
-			<Head title={menu[page].title}/>
+			<Head title={_lang(menu[page].title, locale)}/>
 			<CustomCursor/>
 			{menu.map((item, index) => (
 				<div key={item.href}  className={cn(styles.contentWrapper, index===page && styles.active)}	style={getStyle(index, page, menu.length, linkHeight)}>
